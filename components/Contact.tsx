@@ -35,7 +35,7 @@ export default function Contact() {
               Connect on LinkedIn
             </a>
             <a
-              href="mailto:myfinvision@gmail.com"
+              href="mailto:omkarmishra591@gmail.com"
               className="rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-medium text-fg transition-colors hover:bg-white/10"
             >
               Email me

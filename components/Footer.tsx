@@ -1,7 +1,7 @@
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/OmkarMishr" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/omkarmishradev" },
-  { label: "Email", href: "mailto:myfinvision@gmail.com" },
+  { label: "Email", href: "mailto:omkarmishra591@gmail.com" },
   { label: "Portfolio", href: "https://omkarmishradev.vercel.app" },
 ];
 

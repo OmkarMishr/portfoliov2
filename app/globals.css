@@ -56,6 +56,15 @@
   --font-machina: "Neue Machina", var(--font-grotesk), ui-sans-serif, system-ui,
     sans-serif;
   --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  /* Tokens used by the ported Navbar/Hero (shadcn-style naming) */
+  --color-background: hsl(0 0% 5%);
+  --color-foreground: hsl(0 0% 98%);
+  --color-primary: hsl(15 100% 57%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-muted-foreground: hsl(0 0% 63%);
+  --color-card: hsl(0 0% 8%);
+  --color-border: hsl(0 0% 14%);
 }
 
 * {

@@ -1,131 +1,185 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { portfolioData } from "@/data/portfolio";
+import { ArrowDown, ExternalLink } from "lucide-react";
+
+function StatCounter({ value, label }: { value: string; label: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5 }}
+      className="text-center"
+      data-testid={`stat-${label.toLowerCase().replace(/\s/g, "-")}`}
+    >
+      <div className="text-3xl md:text-4xl font-bold text-primary">{value}</div>
+      <div className="text-xs md:text-sm text-muted-foreground mt-1 font-medium">
+        {label}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Hero() {
-  const root = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.from(".hero-badge", { y: 20, opacity: 0, duration: 0.6 })
-        .from(
-          ".hero-line > span",
-          { yPercent: 115, duration: 1, stagger: 0.12 },
-          "-=0.2",
-        )
-        .from(
-          ".hero-sub",
-          { y: 24, opacity: 0, duration: 0.7 },
-          "-=0.5",
-        )
-        .from(
-          ".hero-cta",
-          { y: 20, opacity: 0, duration: 0.6, stagger: 0.1 },
-          "-=0.4",
-        )
-        .from(
-          ".hero-stat",
-          { y: 20, opacity: 0, duration: 0.6, stagger: 0.08 },
-          "-=0.4",
-        );
-
-      // Subtle parallax glow follow
-      gsap.to(".hero-glow", {
-        yPercent: 12,
-        scrollTrigger: { trigger: el, start: "top top", scrub: 1 },
-      });
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
+  const scrollToProjects = () => {
+    const el = document.getElementById("projects");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section
-      id="top"
-      ref={root}
-      className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-20"
+      id="hero"
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-12 pt-24 pb-16 overflow-hidden"
     >
-      {/* background grid + glow */}
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]" />
+      </div>
+
+      {/* Grid lines */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.18]"
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 35%, black, transparent)",
+            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
         }}
       />
-      <div className="hero-glow pointer-events-none absolute left-1/2 top-[-10%] h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-accent/25 blur-[140px]" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
-        <div className="hero-badge mb-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-muted">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          Open to internships &amp; full-time opportunities
-        </div>
+      <div className="relative z-10 max-w-5xl mx-auto w-full text-center">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-medium mb-8"
+          data-testid="badge-available"
+        >
+          <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          Available for Work
+        </motion.div>
 
-        <h1 className="font-machina text-[clamp(2.6rem,7vw,6rem)] font-extrabold uppercase leading-[0.95] tracking-tight">
-          <span className="hero-line block overflow-hidden">
-            <span>The Full-Stack</span>
-          </span>
-          <span className="hero-line block overflow-hidden">
-            <span>
-              Engineer <span className="text-accent">Companies</span>
+        {/* Heading */}
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.05] mb-8">
+          {[
+            portfolioData.hero.headingLine1,
+            portfolioData.hero.headingLine2,
+            portfolioData.hero.headingLine3,
+          ].map((line, lineIdx) => (
+            <span key={lineIdx} className="block">
+              {line.split(" ").map((word, wordIdx) => {
+                const globalIdx =
+                  [
+                    portfolioData.hero.headingLine1.split(" ").length,
+                    portfolioData.hero.headingLine2.split(" ").length,
+                    portfolioData.hero.headingLine3.split(" ").length,
+                  ]
+                    .slice(0, lineIdx)
+                    .reduce((a, b) => a + b, 0) + wordIdx;
+
+                const isHighlight =
+                  (lineIdx === 0 && wordIdx === 1) ||
+                  (lineIdx === 1 && wordIdx === 0) ||
+                  (lineIdx === 2 && wordIdx === 1);
+
+                return (
+                  <motion.span
+                    key={wordIdx}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.3 + globalIdx * 0.08,
+                      ease: "easeOut",
+                    }}
+                    className={`inline-block mr-4 ${
+                      isHighlight ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {word}
+                  </motion.span>
+                );
+              })}
             </span>
-          </span>
-          <span className="hero-line block overflow-hidden">
-            <span>Want To Hire.</span>
-          </span>
+          ))}
         </h1>
 
-        <p className="hero-sub mt-7 max-w-xl text-lg leading-relaxed text-muted">
-          Hi, I&apos;m <span className="text-fg">Omkar Mishra</span> — I develop
-          full-stack projects, polished user interfaces, and reliable web
-          applications focused on scalable systems and performance.
-        </p>
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
+          {portfolioData.bio}
+        </motion.p>
 
-        <div className="mt-9 flex flex-wrap items-center gap-3">
-          <a
-            href="#work"
-            className="hero-cta rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-white transition-transform hover:scale-[1.03] active:scale-95"
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+        >
+          <button
+            onClick={scrollToProjects}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-full text-base transition-all duration-200 hover:scale-105 active:scale-95"
+            data-testid="button-view-work"
           >
-            View my work →
-          </a>
+            {portfolioData.hero.ctaText}
+            <ExternalLink size={16} />
+          </button>
           <a
-            href="/resume.pdf"
-            className="hero-cta rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-medium text-fg transition-colors hover:bg-white/10"
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("contact")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-white/20 hover:border-white/40 text-white font-bold rounded-full text-base transition-all duration-200 hover:scale-105"
+            data-testid="link-contact-secondary"
           >
-            Download résumé
+            {portfolioData.hero.ctaSecondaryText}
           </a>
-        </div>
+        </motion.div>
 
-        <dl className="mt-16 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
-          {[
-            { n: "1.5+", l: "Years hands-on" },
-            { n: "5+", l: "Projects delivered" },
-            { n: "2", l: "Internships" },
-            { n: "7.8+", l: "Academic CPI" },
-          ].map((s) => (
-            <div key={s.l} className="hero-stat">
-              <dt className="font-machina text-3xl font-extrabold text-fg">
-                {s.n}
-              </dt>
-              <dd className="mt-1 text-xs uppercase tracking-wide text-muted">
-                {s.l}
-              </dd>
-            </div>
+        {/* Stats row */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto border-t border-white/10 pt-10"
+        >
+          {portfolioData.hero.stats.map((stat) => (
+            <StatCounter key={stat.label} value={stat.value} label={stat.label} />
           ))}
-        </dl>
+        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.6 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
+      >
+        <span className="text-xs font-medium tracking-widest uppercase">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        >
+          <ArrowDown size={16} />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

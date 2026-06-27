@@ -48,7 +48,7 @@ const PROJECTS: Project[] = [
 
 export default function Projects() {
   return (
-    <section id="work" className="bg-cream py-24 text-ink sm:py-32">
+    <section id="projects" className="bg-cream py-24 text-ink sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal className="max-w-3xl">
           <span className="inline-block rounded-full border border-ink/15 bg-ink/5 px-4 py-1 text-xs uppercase tracking-widest text-ink/60">

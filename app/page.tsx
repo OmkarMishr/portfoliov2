@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Experience from "@/components/Experience";
 import Marquee from "@/components/Marquee";
 import Expertise from "@/components/Expertise";
 import TechGrid from "@/components/TechGrid";
@@ -15,6 +17,8 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <About />
+        <Experience />
         <Marquee />
         <Expertise />
         <Projects />

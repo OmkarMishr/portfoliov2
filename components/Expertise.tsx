@@ -39,6 +39,7 @@ const GROUPS = [
       { name: "Git", level: 90 },
       { name: "Linux", level: 75 },
       { name: "CI/CD", level: 72 },
+      { name: "Nginx", level: 70 },
     ],
   },
 ];
@@ -79,7 +80,7 @@ export default function Expertise() {
   }, []);
 
   return (
-    <section id="about" ref={root} className="relative py-24 sm:py-32">
+    <section id="expertise" ref={root} className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-block rounded-full border border-white/15 bg-white/5 px-4 py-1 text-xs uppercase tracking-widest text-muted">

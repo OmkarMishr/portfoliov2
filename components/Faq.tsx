@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: "How can I reach you?",
-    a: "Email me at myfinvision@gmail.com or connect on LinkedIn. I usually reply within a day.",
+    a: "Email me at omkarmishra591@gmail.com or connect on LinkedIn. I usually reply within a day.",
   },
 ];
 

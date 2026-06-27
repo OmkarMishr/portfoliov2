@@ -1,63 +1,116 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-const LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Work", href: "#work" },
-  { label: "FAQ", href: "#faq" },
-];
+import React, { useState } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { portfolioData } from "@/data/portfolio";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50);
+  });
+
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id.toLowerCase());
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/10 bg-bg/80 backdrop-blur-xl"
-          : "border-b border-transparent"
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-background/90 backdrop-blur-md border-b border-white/5 py-4"
+          : "bg-transparent py-6"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a href="#top" className="flex items-center gap-2.5">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-accent text-sm font-machina font-extrabold text-white">
-            O
-          </span>
-          <span className="font-machina text-[15px] font-bold tracking-tight">
-            Omkar
-            <span className="text-muted"> | Full-Stack</span>
-          </span>
-        </a>
-
-        <ul className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:bg-white/5 hover:text-fg"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
+      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <a
-          href="#contact"
-          className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-white transition-transform hover:scale-[1.03] active:scale-95"
+          href="#"
+          onClick={(e) => handleNavClick(e, "hero")}
+          className="text-xl md:text-2xl font-bold tracking-tighter"
+          data-testid="link-logo"
         >
-          Let&apos;s talk
+          {portfolioData.name.split(" ")[0]}
+          <span className="text-primary">.</span>
         </a>
-      </nav>
-    </header>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          <ul className="flex items-center gap-6">
+            {portfolioData.navLinks.map((link) => (
+              <li key={link}>
+                <a
+                  href={`#${link.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(e, link)}
+                  className="text-sm font-medium text-muted-foreground hover:text-white transition-colors"
+                  data-testid={`link-nav-${link.toLowerCase()}`}
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-2.5 rounded-full text-sm transition-colors"
+            onClick={(e) => handleNavClick(e, "contact")}
+            data-testid="button-hire-me"
+          >
+            Hire Me
+          </button>
+        </nav>
+
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden text-foreground p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          data-testid="button-mobile-menu"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="md:hidden bg-background border-b border-white/5"
+        >
+          <ul className="flex flex-col px-6 py-4 gap-4">
+            {portfolioData.navLinks.map((link) => (
+              <li key={link}>
+                <a
+                  href={`#${link.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(e, link)}
+                  className="text-lg font-medium text-muted-foreground hover:text-white transition-colors block py-2"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
+            <li>
+              <button
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-full mt-4 transition-colors"
+                onClick={(e) => handleNavClick(e, "contact")}
+              >
+                Hire Me
+              </button>
+            </li>
+          </ul>
+        </motion.div>
+      )}
+    </motion.header>
   );
 }
