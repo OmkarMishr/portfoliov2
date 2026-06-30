@@ -136,13 +136,10 @@ export default function Hero() {
             <ExternalLink size={16} />
           </button>
           <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              document
-                .getElementById("contact")
-                ?.scrollIntoView({ behavior: "smooth" });
-            }}
+            href="/Resume/OmkarMishra_Resume.pdf"
+            download
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-white/20 hover:border-white/40 text-white font-bold rounded-full text-base transition-all duration-200 hover:scale-105"
             data-testid="link-contact-secondary"
           >

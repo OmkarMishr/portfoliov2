@@ -47,6 +47,7 @@ export default function Contact() {
           from_email: form.email,
           reply_to: form.email,
           message: form.message,
+          time: new Date().toLocaleString(),
         },
         { publicKey: PUBLIC_KEY },
       );
