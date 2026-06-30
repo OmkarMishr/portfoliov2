@@ -71,128 +71,103 @@ function ExperienceCard({ job, index }: { job: Job; index: number }) {
             : "border-white/10 bg-[#0d0d0f] text-foreground"
         }`}
       >
-        <div className="grid items-stretch gap-6 md:gap-10 lg:grid-cols-[minmax(0,360px)_1fr]">
-          {/* Left visual panel */}
-          <div
-            className={`relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-2xl p-6 ${
-              orange ? "bg-black/25" : "bg-white/[0.04]"
-            }`}
-          >
-            <div
-              className="pointer-events-none absolute inset-0 opacity-[0.06]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)",
-                backgroundSize: "28px 28px",
-              }}
-            />
-            <div className="relative flex justify-end">
-              {job.period.includes("Present") && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-400">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-                  Present
-                </span>
-              )}
-            </div>
-
-            {/* Large company logo */}
-            <div className="relative mt-auto">
-              {job.logo ? (
-                <div className="relative flex h-28 w-full items-center justify-center overflow-hidden rounded-2xl bg-white p-6 md:h-32">
-                  <Image
-                    src={job.logo}
-                    alt={`${job.company} logo`}
-                    fill
-                    sizes="(max-width: 1024px) 90vw, 320px"
-                    className="object-contain p-6"
-                  />
-                </div>
-              ) : (
-                <div
-                  className={`flex h-28 w-full items-center justify-center rounded-2xl text-5xl font-bold md:h-32 ${
-                    orange ? "bg-white/15 text-white" : "bg-primary/10 text-primary"
-                  }`}
-                >
-                  {job.company.charAt(0)}
-                </div>
-              )}
+        {/* Header: small logo beside the role/company, Present badge on the right */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-4">
+            {job.logo ? (
+              <span className="relative grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-white p-1.5">
+                <Image
+                  src={job.logo}
+                  alt={`${job.company} logo`}
+                  fill
+                  sizes="48px"
+                  className="object-contain p-1.5"
+                />
+              </span>
+            ) : (
+              <span
+                className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl text-lg font-bold ${
+                  orange ? "bg-white/15 text-white" : "bg-primary/10 text-primary"
+                }`}
+              >
+                {job.company.charAt(0)}
+              </span>
+            )}
+            <div>
+              <h3 className="text-xl font-bold tracking-tight md:text-3xl">
+                {job.role}
+              </h3>
               <p
-                className={`mt-4 text-xl font-bold tracking-tight ${
-                  orange ? "text-white" : "text-foreground"
+                className={`text-sm font-semibold ${
+                  orange ? "text-white/80" : "text-primary"
                 }`}
               >
                 {job.company}
+                {"location" in job && job.location ? (
+                  <span
+                    className={orange ? "text-white/60" : "text-muted-foreground"}
+                  >
+                    {" "}
+                    · {job.location}
+                  </span>
+                ) : null}
               </p>
-              <p
-                className={`mt-1 text-sm ${
-                  orange ? "text-white/70" : "text-muted-foreground"
+            </div>
+          </div>
+
+          {job.period.includes("Present") && (
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-400">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+              Present
+            </span>
+          )}
+        </div>
+
+        {/* Description — spans the full card */}
+        <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+          {job.points.map((point, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <CheckCircle2
+                size={17}
+                className={`mt-0.5 shrink-0 ${
+                  orange ? "text-white" : "text-primary"
+                }`}
+              />
+              <span
+                className={`text-sm leading-relaxed ${
+                  orange ? "text-white/90" : "text-muted-foreground"
                 }`}
               >
-                {job.type}
-                {"location" in job && job.location ? ` · ${job.location}` : ""}
-              </p>
-            </div>
-          </div>
+                {point}
+              </span>
+            </li>
+          ))}
+        </ul>
 
-          {/* Right content */}
-          <div className="flex flex-col">
-            <h3 className="text-2xl font-bold tracking-tight md:text-4xl">
-              {job.role}
-            </h3>
-            <p
-              className={`mt-1.5 text-sm font-semibold ${
-                orange ? "text-white/80" : "text-primary"
-              }`}
-            >
-              {job.company}
-            </p>
-
-            <ul className="mt-5 flex flex-col gap-3">
-              {job.points.map((point, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2
-                    size={17}
-                    className={`mt-0.5 shrink-0 ${
-                      orange ? "text-white" : "text-primary"
-                    }`}
-                  />
-                  <span
-                    className={`text-sm leading-relaxed ${
-                      orange ? "text-white/90" : "text-muted-foreground"
-                    }`}
-                  >
-                    {point}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Stat chips */}
-            <div
-              className={`mt-7 flex flex-wrap gap-x-10 gap-y-5 border-t pt-6 ${
-                orange ? "border-white/20" : "border-white/10"
-              }`}
-            >
-              <StatChip
-                icon={Clock}
-                value={job.period}
-                label="Timeline"
-                orange={orange}
-              />
-              <StatChip
-                icon={Briefcase}
-                value={job.type ?? "—"}
-                label="Role type"
-                orange={orange}
-              />
-              <StatChip
-                icon={MapPin}
-                value={("location" in job && job.location) || "Remote"}
-                label="Location"
-                orange={orange}
-              />
-            </div>
-          </div>
+        {/* Stat chips */}
+        <div
+          className={`mt-8 flex flex-wrap gap-x-10 gap-y-5 border-t pt-6 ${
+            orange ? "border-white/20" : "border-white/10"
+          }`}
+        >
+          <StatChip
+            icon={Clock}
+            value={job.period}
+            label="Timeline"
+            orange={orange}
+          />
+          <StatChip
+            icon={Briefcase}
+            value={job.type ?? "—"}
+            label="Role type"
+            orange={orange}
+          />
+          <StatChip
+            icon={MapPin}
+            value={("location" in job && job.location) || "Remote"}
+            label="Location"
+            orange={orange}
+          />
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ export const portfolioData = {
   },
 
   // Nav links (map to section ids on the page)
-  navLinks: ["About", "Skills", "Projects", "FAQ", "Contact"],
+  navLinks: ["About", "Skills", "Projects", "Contact"],
 
   // About section
   about: {

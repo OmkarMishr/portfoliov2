@@ -155,9 +155,13 @@ export default function Contact() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="h-[350px] w-full sm:h-[450px] lg:h-[550px]"
+          className="relative h-[350px] w-full sm:h-[450px] lg:h-[550px]"
         >
-          <EarthCanvas />
+          {/* Soft orange glow behind the globe */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60%] w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/25 blur-[110px]" />
+          <div className="relative h-full w-full">
+            <EarthCanvas />
+          </div>
         </motion.div>
       </div>
     </section>

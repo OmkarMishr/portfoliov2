@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { Menu, X } from "lucide-react";
@@ -38,11 +39,22 @@ export default function Navbar() {
         <a
           href="#"
           onClick={(e) => handleNavClick(e, "hero")}
-          className="text-xl md:text-2xl font-bold tracking-tighter"
+          className="flex items-center gap-2 text-xl md:text-2xl font-bold tracking-tighter"
           data-testid="link-logo"
         >
-          {portfolioData.name.split(" ")[0]}
-          <span className="text-primary">.</span>
+          <Image
+            src="/logo.png"
+            alt="Omkar logo"
+            width={32}
+            height={32}
+            priority
+            className="h-7 w-7 object-contain md:h-8 md:w-8"
+            style={{ filter: "hue-rotate(18deg) saturate(1.4) brightness(1.05)" }}
+          />
+          <span>
+            {portfolioData.name.split(" ")[0]}
+            <span className="text-primary">.</span>
+          </span>
         </a>
 
         {/* Desktop Nav */}
