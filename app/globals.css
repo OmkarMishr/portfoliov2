@@ -119,7 +119,23 @@ html.lenis body {
 .marquee-track {
   display: inline-flex;
   white-space: nowrap;
-  animation: marquee 22s linear infinite;
+  animation: marquee 20s linear infinite;
+}
+
+/* Projects auto-scrolling reel — layout + hover behaviour live in the
+   component via Tailwind utilities; this just drives the motion. */
+.proj-track {
+  animation: marquee 20s linear infinite;
+}
+/* Pause the reel while hovering it (plain CSS so it beats the unlayered
+   .proj-track animation rule above). */
+.proj-reel:hover .proj-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj-track {
+    animation: none;
+  }
 }
 
 /* Custom scrollbar */

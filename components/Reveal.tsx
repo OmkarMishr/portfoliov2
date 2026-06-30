@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+import {
+  createElement,
+  useEffect,
+  useRef,
+  type ElementType,
+  type ReactNode,
+} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -55,9 +61,5 @@ export default function Reveal({
     return () => ctx.revert();
   }, [y, delay, stagger]);
 
-  return (
-    <Tag ref={ref} className={className}>
-      {children}
-    </Tag>
-  );
+  return createElement(Tag, { ref, className }, children);
 }

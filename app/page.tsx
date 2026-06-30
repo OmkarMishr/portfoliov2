@@ -10,6 +10,7 @@ import WhyMe from "@/components/WhyMe";
 import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import StarsBackground from "@/components/StarsBackground";
 
 export default function Home() {
   return (
@@ -25,9 +26,13 @@ export default function Home() {
         <TechGrid />
         <WhyMe />
         <Faq />
-        <Contact />
       </main>
-      <Footer />
+      {/* Starfield behind the contact + footer */}
+      <div className="relative overflow-hidden bg-[#050505]">
+        <StarsBackground />
+        <Contact />
+        <Footer />
+      </div>
     </>
   );
 }
