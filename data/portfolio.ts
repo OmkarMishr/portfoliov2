@@ -139,6 +139,15 @@ export const portfolioData = {
       live: "https://www.crm.myfinvision.com/",
     },
     {
+      title: "TypeSnippet",
+      blurb:
+        "A snippet-driven typing app to practice and share code snippets, backed by Firebase with serverless functions.",
+      tags: ["React", "Serverless", "Firebase", "GitHub"],
+      image: "/projects/typesnippet.png",
+      github: "https://github.com/OmkarMishr/TypeSnippet",
+      live: "https://typesnippet.vercel.app",
+    },
+    {
       title: "Developer Portfolio & Blog",
       blurb:
         "Content-driven site with MDX, animated transitions, and a fully static, SEO-optimized build.",
